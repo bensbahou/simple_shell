@@ -22,6 +22,11 @@ int main(void)
 			_puts("Finish...\n");
 			break;
 		}
+		if (_strcmp(read_line, "exit\n") == 0)
+		{
+			free(read_line);
+			exit(0);
+		}
 
 		_puts(read_line);
 		_putchar(10);
