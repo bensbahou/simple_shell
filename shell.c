@@ -5,17 +5,26 @@
  *
  * Return: 0 on success
  */
+
 int main(void)
 {
 	char *prompt = ">> ";
 	char *read_line = NULL;
 	size_t n = 0;
+	ssize_t read_chars_count;
 
 	while (1)
 	{
-		printf("%s", prompt);
-		getline(&read_line, &n, stdin);
-		printf("%s\n", read_line);
+		_puts(prompt);
+		read_chars_count = getline(&read_line, &n, stdin);
+		if (read_chars_count == -1)
+		{
+			_puts("Finish...\n");
+			break;
+		}
+
+		_puts(read_line);
+		_putchar(10);
 	}
 	free(read_line);
 	return (0);
