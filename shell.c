@@ -1,32 +1,33 @@
 #include "main.h"
 
-void execmd(char *args[])
+void execmd(char *args[], char *envp[], char **argv)
 {
-	pid_t pid;
-	char *command;
+  pid_t pid;
+  char *command;
 
-	if (*args)
-	{
-		pid = fork();
+  if (*args) {
+    /* Fork a child process */
+    pid = fork();
 
-		if (pid == 0)
-		{
-			command = args[0];
-			execve(command, args, NULL);
-			exit(1);
-		}
-		else if (pid > 0)
-		{
-			wait(NULL);
-		}
-		else
-		{
-			exit(1);
-		}
-	}
+    if (pid == 0) {
+      /* This is the child process */
+      command = args[0];
+      execve(command, args, envp);
+
+      perror(argv[0]);
+      exit(1);
+    } else if (pid > 0) {
+      /* This is the parent process */
+      wait(NULL);
+    } else {
+      /* Error creating child process */
+      perror("Error:");
+      exit(1);
+    }
+  }
 }
 
-int main(void)
+int main(int ac, char *argv[])
 {
 	size_t n = 0;
 	const char *delim = " \n";
@@ -37,6 +38,9 @@ int main(void)
 	char *token;
 	int i;
 	char **args;
+
+	(void)ac;
+	
 
 	while (1)
 	{
@@ -77,6 +81,7 @@ int main(void)
 			token = strtok(NULL, delim);
 		}
 		num_tokens++;
+
 		args = malloc(sizeof(char *) * num_tokens);
 		token = strtok(lineptr_copy, delim);
 
@@ -88,7 +93,7 @@ int main(void)
 			token = strtok(NULL, delim);
 		}
 		args[i] = NULL;
-		execmd(args);
+		execmd(args, environ, argv);
 
 		for (i = 0; i < num_tokens; i++)
 		{
