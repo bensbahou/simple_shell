@@ -1,29 +1,28 @@
 #include "main.h"
 
-void execmd(char *args[], char *envp[], char **argv)
-{
+void execmd(char *args[], char *envp[], char **argv) {
   pid_t pid;
   char *command;
 
   if (*args) {
-    /* Fork a child process */
-    pid = fork();
+	/* Fork a child process */
+	pid = fork();
 
-    if (pid == 0) {
-      /* This is the child process */
-      command = args[0];
-      execve(command, args, envp);
+	if (pid == 0) {
+	  /* This is the child process */
+	  command = args[0];
+	  execve(command, args, envp);
 
-      perror(argv[0]);
-      exit(1);
-    } else if (pid > 0) {
-      /* This is the parent process */
-      wait(NULL);
-    } else {
-      /* Error creating child process */
-      perror("Error:");
-      exit(1);
-    }
+	  perror(argv[0]);
+	  exit(1);
+	} else if (pid > 0) {
+	  /* This is the parent process */
+	  wait(NULL);
+	} else {
+	  /* Error creating child process */
+	  perror("Error:");
+	  exit(1);
+	}
   }
 }
 
@@ -53,8 +52,8 @@ int main(int ac, char *argv[])
 		}
 		if (_strcmp(lineptr, "exit\n") == 0)
 		{
-			_puts("exit the shell\n");
-			break;
+			free(lineptr);
+			exit(0);
 		}
 		if (_strcmp(lineptr, "env\n") == 0)
 		{
@@ -81,7 +80,6 @@ int main(int ac, char *argv[])
 			token = strtok(NULL, delim);
 		}
 		num_tokens++;
-
 		args = malloc(sizeof(char *) * num_tokens);
 		token = strtok(lineptr_copy, delim);
 
@@ -107,6 +105,6 @@ int main(int ac, char *argv[])
 
 	free(lineptr);
 
-	return (0);
+	return 0;
 }
 
