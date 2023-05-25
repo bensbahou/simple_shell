@@ -34,29 +34,20 @@ int exe(char *line, char **ar, char *nln, char **arry, char **argv, int flcnt)
 		{
 			_printf("%s: %d: %s: not found\n", argv[0], flcnt, ar[0]);
 			free(statbuf);
-			modfree(line, ar, nln, arry);
-			_exit(-1);
+			modfree(line, ar, nln, arry), _exit(-1);
 		}
 	}
 	else
 		while (waitpid(-1, &status, 0) != child)
 			;
 	free(statbuf);
-	switch (status)
-	{
-	case 0:
+	if (status == 0)
 		errno = 0;
-		break;
-	case 512:
+	else if (status == 512)
 		errno = 2;
-		break;
-	case 65280:
+	else if (status == 65280)
 		errno = 127;
-		break;
-	default:
-		break;
-	}
-	return (0);
+	return 0;
 }
 
 /**
@@ -150,4 +141,3 @@ int findonpath(char **tokens)
 	free(path);
 	return (onpath);
 }
-
