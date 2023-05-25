@@ -60,6 +60,8 @@ int formatMod(va_list *args, const char *format, int i)
 /**
  * getdigits - gets digits
  * @n: int to get digits from
+ *
+ * return : void
  */
 void getdigits(int n)
 {
@@ -73,6 +75,8 @@ void getdigits(int n)
 		write(1, &c, 1);
 	}
 }
+
+
 /**
  * print_digit - prints digit passed from _printf
  * @args: argument pointer

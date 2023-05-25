@@ -9,10 +9,11 @@
 char *_strcpy(char *dest, char *src)
 {
 	char *p = dest;
+
 	while ((*p++ = *src++))
 	{
 	}
-	return dest;
+	return (dest);
 }
 
 /**
@@ -66,18 +67,19 @@ int _strcmp(char *s1, char *s2)
 int _strncmp(char *s1, char *s2, int len)
 {
 	int i = 0;
+
 	for (i = 0; i < len; i++)
 	{
 		if (s1[i] != s2[i])
 		{
-			return -1;
+			return (-1);
 		}
 		if (s1[i] == '\0')
 		{
 			break;
 		}
 	}
-	return 0;
+	return (0);
 }
 /**
  * _strcat - concatenates two strings
@@ -90,6 +92,7 @@ int _strncmp(char *s1, char *s2, int len)
 char *_strcat(char *dest, char *src)
 {
 	char *p = dest;
+
 	while (*p)
 	{
 		p++;
@@ -99,5 +102,5 @@ char *_strcat(char *dest, char *src)
 		*p++ = *src++;
 	}
 	*p = '\0';
-	return dest;
+	return (dest);
 }

@@ -34,9 +34,7 @@ char *_strcat(char *, char *);
 int _strcmp(char *, char *);
 int _strncmp(char *, char *, int);
 char *_strcpy(char *, char *);
-
-int _printf(const char *, ...); 
-
+int _printf(const char *, ...);
 int parsing_input(char *, int, char *[], int);
 int exe(char *, char **, char *, char **, char **, int);
 void modfree(char *, char **, char *, char **);
