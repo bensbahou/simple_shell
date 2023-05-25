@@ -10,11 +10,12 @@ int print_string(va_list *args)
 {
 	char *str = va_arg(*args, char *);
 	int len = 0;
+
 	while (str[len] != '\0')
 		len++;
 
 	write(1, str, len);
-	return len;
+	return (len);
 }
 
 /**
@@ -63,6 +64,7 @@ int formatMod(va_list *args, const char *format, int i)
 void getdigits(int n)
 {
 	char c;
+
 	if (n > 0)
 		getdigits((n / 10));
 	if (n)
