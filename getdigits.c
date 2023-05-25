@@ -2,7 +2,7 @@
 
 /**
  * getdigits - gets digits
- * @n: int to get digits from
+ * @n: variable to get digits from
  *
  * return : void
  */
