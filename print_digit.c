@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * print_digit - prints digit passed from _printf
+ * print_digit - print digits passed from _printf
  * @args: argument pointer
  *
  * Return: count of digits and signs printed
