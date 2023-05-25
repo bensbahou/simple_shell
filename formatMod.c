@@ -3,7 +3,7 @@
 /**
  * formatMod - checks the format modifer
  * @args: argument pointer
- * @format: the string
+ * @format: string to print
  * @i: the location of the modifer
  *
  * Return: count of anything printed
