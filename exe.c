@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * exe - run new process
+ * exe - execute new process
  * @line: data input
  * @ar: data to be executed by execve
  * @nln: duplicate of line
