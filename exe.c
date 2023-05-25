@@ -47,7 +47,7 @@ int exe(char *line, char **ar, char *nln, char **arry, char **argv, int flcnt)
 		errno = 2;
 	else if (status == 65280)
 		errno = 127;
-	return 0;
+	return (0);
 }
 
 /**
