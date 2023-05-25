@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * checkbltin - verify if command is builtin
+ * checkbltin - verify if command is builtin to system
  * @line: input entered by user
  * @ar: array that can be handled by execve
  * @newline: duplicate of line
