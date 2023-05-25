@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * print_string - print argument
+ * print_string - print string passed as argument
  * @args: ponter to arg
  *
  * Return: printed char
