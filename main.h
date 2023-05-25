@@ -29,6 +29,8 @@ typedef struct formating
 	int (*type)();
 } formating;
 
+/* Functions prototype */
+
 char *_strdup(char *);
 char *_strcat(char *, char *);
 int _strcmp(char *, char *);
