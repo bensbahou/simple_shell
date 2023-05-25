@@ -1,84 +1,124 @@
 #include "main.h"
 
-void execmd(char *args[], char *envp[], char **argv)
+/**
+ * parsing_input - convert input to token
+ * @line: input to be converted
+ * @num_tokens: tokens count
+ * @argv: argument vector
+ * @cmdcount: command count
+ * Return: return 0 on success
+ */
+
+int parsing_input(char *line, int num_tokens, char **argv, int cmdcount)
 {
-	pid_t pid;
-	char *command;
+	int i = 0, bltin, exval = 0;
+	char *p = NULL, *newline = NULL, **array = NULL, **ar = NULL;
+	char *del = " \t\r\n\f\v";
 
-	if (*args)
+	array = malloc(sizeof(char *) * num_tokens);
+	newline = _strdup(line);
+	p = strtok(newline, del);
+	if (p == NULL)
 	{
-		/* Fork a child process */
-		pid = fork();
-
-		if (pid == 0)
-		{
-			/* This is the child process */
-			command = args[0];
-			execve(command, args, envp);
-
-			perror(argv[0]);
-			exit(1);
-		}
-		else if (pid > 0)
-		{
-			/* This is the parent process */
-			wait(NULL);
-		}
-		else
-		{
-			/* Error creating child process */
-			perror("Error:");
-			exit(1);
-		}
+		modfree(line, ar, newline, array);
+		return (0);
 	}
+	for (; p != NULL; p = strtok(NULL, del))
+		array[i++] = p;
+	ar = malloc(sizeof(char *) * (num_tokens + 1));
+	for (i = 0; i < num_tokens; i++)
+		ar[i] = _strdup(array[i]);
+	ar[i] = NULL;
+	bltin = checkbltin(line, ar, newline, array);
+	if (bltin == 0)
+		exval = exe(line, ar, newline, array, argv, cmdcount);
+	modfree(line, ar, newline, array);
+	return (exval);
 }
 
-int main(int ac, char *argv[])
-{
-	size_t n = 0;
-	int num_tokens = 0, i;
-	char *env_var = *environ, *token, **args, *delim = " \n";
-	char *lineptr = NULL, *lineptr_copy = NULL;
-	ssize_t nchars_read;
+/**
+ * modfree - function to free up memory
+ * @line: line to free up
+ * @ar: array to free up
+ * @newline: line to free up
+ * @array: array to free up
+ */
 
-	(void)ac;
-	while (1)
+void modfree(char *line, char **ar, char *newline, char **array)
+{
+	int i = 0;
+
+	if (ar != NULL)
+		while (ar[i] != NULL)
+			free(ar[i++]);
+	free(ar);
+
+	if (newline != NULL)
+		free(newline);
+	if (line != NULL)
+		free(line);
+	if (array != NULL)
+		free(array);
+}
+
+/**
+ * tokcount - token count to be created
+ * @line: data
+ * Return: number of tokens to create
+ */
+
+int tokcount(char *line)
+{
+	int num_tokens = 0, i, check = 1;
+
+	for (i = 0; line[i]; i++)
+		if (line[i] == ' ' || line[i] == 10 || line[i] == '\t')
+			check = 1;
+		else if (check == 1)
+			check = 0, ++num_tokens;
+	return (num_tokens);
+}
+
+/**
+ * main - the entry of the shell program
+ * @argc: argument count
+ * @argv: argument vetor
+ *
+ * Return: 0 if the program exits properly
+ */
+
+int main(int argc, char *argv[])
+{
+	size_t buffer_size = 0;
+	char *line = NULL;
+	int i, num_tokens = 0, cmdcount = 1;
+	int interactive_mode = isatty(STDIN_FILENO);
+
+	signal(SIGINT, SIG_IGN);
+	if (!interactive_mode && argc == 1)
 	{
-		nchars_read = getline(&lineptr, &n, stdin);
-		if (nchars_read == -1)
+		while (getline(&line, &buffer_size, stdin) > 0)
 		{
+			num_tokens = tokcount(line);
+			parsing_input(line, num_tokens, argv, cmdcount);
+			line = NULL;
+		}
+		free(line);
+		return (0);
+	}
+	while (interactive_mode)
+	{
+		write(1, "($) ", 4), num_tokens = 0;
+		i = getline(&line, &buffer_size, stdin);
+		if (i < 0)
+		{
+			free(line), write(1, "\n", 1);
 			break;
 		}
-		if (_strcmp(lineptr, "exit\n") == 0)
-			free(lineptr), exit(0);
-		if (_strcmp(lineptr, "env\n") == 0)
-		{
-			while (env_var != NULL)
-				_puts(env_var), _putchar('\n'), env_var = *(environ++);
-			continue;
-		}
-		lineptr_copy = malloc(sizeof(char) * nchars_read);
-		if (lineptr_copy == NULL)
-		{
-			perror("tsh: memory allocation error");
-			continue;
-		}
-		_strcpy(lineptr_copy, lineptr), token = strtok(lineptr, delim);
-		while (token != NULL)
-			num_tokens++, token = strtok(NULL, delim);
-		num_tokens++, args = malloc(sizeof(char *) * num_tokens);
-		token = strtok(lineptr_copy, delim);
-		for (i = 0; token != NULL; i++)
-		{
-			args[i] = malloc(sizeof(char) * (strlen(token) + 1));
-			_strcpy(args[i], token), token = strtok(NULL, delim);
-		}
-		args[i] = NULL, execmd(args, environ, argv);
-		for (i = 0; i < num_tokens; i++)
-			free(args[i]);
-		free(args), free(lineptr_copy), lineptr_copy = NULL, num_tokens = 0;
+		num_tokens = tokcount(line);
+		parsing_input(line, num_tokens, argv, cmdcount);
+		cmdcount++, line = NULL;
 	}
-	free(lineptr);
 	return (0);
 }
 
