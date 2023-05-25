@@ -1,6 +1,30 @@
 #include "main.h"
 
 /**
+ * _strcat - concatenates two strings
+ * @dest: the destination string
+ * @src: the source string
+ *
+ * Return: pointer to dest.
+ */
+
+char *_strcat(char *dest, char *src)
+{
+	char *p = dest;
+
+	while (*p)
+	{
+		p++;
+	}
+	while (*src)
+	{
+		*p++ = *src++;
+	}
+	*p = '\0';
+	return (dest);
+}
+
+/**
  * _strcpy - copy string
  * @src: source to copy from
  * @dest: destination to be filled with source content
@@ -80,27 +104,4 @@ int _strncmp(char *s1, char *s2, int len)
 		}
 	}
 	return (0);
-}
-/**
- * _strcat - concatenates two strings
- * @dest: the destination string
- * @src: the source string
- *
- * Return: pointer to dest.
- */
-
-char *_strcat(char *dest, char *src)
-{
-	char *p = dest;
-
-	while (*p)
-	{
-		p++;
-	}
-	while (*src)
-	{
-		*p++ = *src++;
-	}
-	*p = '\0';
-	return (dest);
 }
