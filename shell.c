@@ -4,8 +4,8 @@
  * parsing_input - convert input to token
  * @line: input to be converted
  * @num_tokens: tokens count
- * @argv: argument vector
- * @cmdcount: command count
+ * @argv: argument vectors
+ * @cmdcount: command counts
  * Return: return 0 on success
  */
 
