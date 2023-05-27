@@ -14,10 +14,7 @@ int checkbltin(char *line, char **ar, char *newline, char **array)
 	if (_strcmp(ar[0], "exit") == 0)
 	{
 		modfree(line, ar, newline, array);
-		if (isatty(STDIN_FILENO))
-			exit(errno);
-		else
-			exit(2);
+		exit(errno);
 	}
 	else if (_strcmp(ar[0], "env") == 0)
 	{
