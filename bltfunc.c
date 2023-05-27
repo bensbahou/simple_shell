@@ -13,6 +13,16 @@ int checkbltin(char *line, char **ar, char *newline, char **array)
 
 	if (_strcmp(ar[0], "exit") == 0)
 	{
+		if (ar[1] != NULL)
+	{ 
+		for (i = 0; ar[1][i]; i++)
+			if ((ar[1][i] < '0' || ar[1][i] > '9')
+				&& ar[1][i] != '+')
+			{ 
+				errno = 2;
+			}
+		errno = atoi(ar[1]);
+	}
 		modfree(line, ar, newline, array);
 		exit(errno);
 	}
