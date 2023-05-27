@@ -93,6 +93,11 @@ int main(int argc, char *argv[])
 	char *line = NULL;
 	int i, num_tokens = 0, cmdcount = 1;
 	int interactive_mode = isatty(STDIN_FILENO);
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && argc == 1)
+	{
+		errno = 2;
+	}
+	errno = 0;
 
 	signal(SIGINT, SIG_IGN);
 	if (!interactive_mode && argc == 1)
